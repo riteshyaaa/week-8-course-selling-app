@@ -12,7 +12,10 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
+<<<<<<< HEAD
     "dotenv": "^16.4.7",
+=======
+>>>>>>> c65878e16de3846842d2183b841f4e383424d46b
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",

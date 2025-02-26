@@ -7,7 +7,11 @@ courseRouter.post("/purchase", (req, res) => {
 })
 
 courseRouter.get("/preview", (req, res) => {
+<<<<<<< HEAD
     res.send("SignUP is done!") 
+=======
+    res.send("SignUP is done!")
+>>>>>>> c65878e16de3846842d2183b841f4e383424d46b
 })
 
 module.exports = {
