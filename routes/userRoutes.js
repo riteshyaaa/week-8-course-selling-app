@@ -2,14 +2,13 @@ const { Router } = require("express");
 const { z } = require("zod");
 const bcrypt = require("bcrypt");
 const { userModel } = require("../db");
-<<<<<<< HEAD
+
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "ritesh123";
-=======
-const jwt =  require("jsonwebtoken");
-const JWT_SECRET = "ritesh123"
 
->>>>>>> c65878e16de3846842d2183b841f4e383424d46b
+
+
+
 
 const userRouter = Router();
 
@@ -36,11 +35,10 @@ userRouter.post("/signup", async (req, res) => {
       .max(50, { message: "Last name must be less than 50 characters" }),
   });
 
-<<<<<<< HEAD
-  const parseDataWithSuccess = UserSchema.safeParse(req.body);
-=======
+
+ 
   const parseDataWithSuccess =  UserSchema.safeParse(req.body);
->>>>>>> c65878e16de3846842d2183b841f4e383424d46b
+
 
   if (!parseDataWithSuccess.success) {
     return res.json({
@@ -52,29 +50,24 @@ userRouter.post("/signup", async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
   const hashedPassword = await bcrypt.hash(password, 5);
   // console.log(hashedPassword
-<<<<<<< HEAD
+
+
+  // Error handling for creating a new user
 
   // Error handling for creating a new user
   try {
     // Create a new user using the UserModel.create() method
-    await userModel.create({
-=======
-  
-  // Error handling for creating a new user
-  try {
-    // Create a new user using the UserModel.create() method
     await  userModel.create({
->>>>>>> c65878e16de3846842d2183b841f4e383424d46b
+
       email: email,
       password: hashedPassword,
       firstName: firstName,
       lastName: lastName,
     });
-<<<<<<< HEAD
-  } catch (err) {
-=======
+
+ 
   }catch (err) {
->>>>>>> c65878e16de3846842d2183b841f4e383424d46b
+
     if (err.code === 11000) {
       return res.json({
         message: "Email already exists",
@@ -86,51 +79,52 @@ userRouter.post("/signup", async (req, res) => {
     });
   }
 
-<<<<<<< HEAD
+
   return res.json({
     message: "User created successfully!",
   });
+  
   // This is the another way to  create a new user using the UserModel.create() method
 });
-userRouter.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await userModel.findOne({ email });
+// userRouter.post("/signin", async (req, res) => {
+//   const { email, password } = req.body;
+//   try {
+//     const user = await userModel.findOne({ email });
 
-    if (!user) {
-      return res.json({
-        message: "  user not found!",
-      });
-    }
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (isPasswordCorrect) {
-      // Create a JWT token using the jwt.sign() method
-      const token = jwt.sign(
-        {
-          id: user._id.toString(),
-        },
-        JWT_SECRET
-      );
+//     if (!user) {
+//       return res.json({
+//         message: "  user not found!",
+//       });
+//     }
+//     const isPasswordCorrect = await bcrypt.compare(password, user.password);
+//     if (isPasswordCorrect) {
+//       // Create a JWT token using the jwt.sign() method
+//       const token = jwt.sign(
+//         {
+//           id: user._id.toString(),
+//         },
+//         JWT_SECRET
+//       );
 
-      // Send the token to the client
-      res.json({
-        token: token,
-        message: "You are signed in!",
-      });
-    } else {
-      // If the user is not found, send an error message to the client
-      res.status(403).json({
-        message: "Invalid Credentials!",
-      });
-    }
-  } catch (error) {}
-=======
-    return res.json({
-      message: "User created successfully!",
-    });
-    // This is the another way to  create a new user using the UserModel.create() method
+//       // Send the token to the client
+//       res.json({
+//         token: token,
+//         message: "You are signed in!",
+//       });
+//     } else {
+//       // If the user is not found, send an error message to the client
+//       res.status(403).json({
+//         message: "Invalid Credentials!",
+//       });
+//     }
+//   } catch (error) {}
+
+//     return res.json({
+//       message: "User created successfully!",
+//     });
+//     // This is the another way to  create a new user using the UserModel.create() method
  
-});
+// });
 userRouter.post("/signin", async (req, res) => {
 const { email, password } = req.body;
 try {
@@ -168,7 +162,7 @@ if (isPasswordCorrect) {
 }
 
 
->>>>>>> c65878e16de3846842d2183b841f4e383424d46b
+
 });
 userRouter.get("/purchases", (req, res) => {
   res.send("SignUP is done!");
