@@ -1,8 +1,5 @@
 const { Router } = require("express");
-
 const { adminModel, courseModel } = require("../db");
-
-
 const adminRouter = Router();
 const { z } = require("zod");
 const jwt = require("jsonwebtoken");
@@ -10,8 +7,6 @@ const bcrypt = require("bcrypt");
 
 const { JWT_ADMIN_PASSWORD } = require("../config");
 const { adminMiddleware } = require("../middlewares/admin");
-
-
 
 adminRouter.post("/signup", async (req, res) => {
   const AdminSchema = z.object({
@@ -76,7 +71,6 @@ adminRouter.post("/signup", async (req, res) => {
   // This is the another way to  create a new user using the UserModel.create() method
 });
 adminRouter.post("/signin", async (req, res) => {
-
   // Validate the request body data using z schema (email, password must be valid)
   const requireBody = z.object({
     email: z.string().email(), // Email must be a valid format
@@ -94,8 +88,6 @@ adminRouter.post("/signin", async (req, res) => {
     });
   }
 
-
-
   const { email, password } = req.body;
 
   try {
@@ -103,16 +95,12 @@ adminRouter.post("/signin", async (req, res) => {
 
     if (!admin) {
       return res.json({
-
         message: "  Incorrect credentials",
       });
     }
-    
 
-   
     const isPasswordCorrect = await bcrypt.compare(password, admin.password);
     if (isPasswordCorrect) {
-
       // Create a JWT token using the jwt.sign() method
       const token = jwt.sign(
         {
@@ -121,6 +109,11 @@ adminRouter.post("/signin", async (req, res) => {
         JWT_ADMIN_PASSWORD
       );
 
+      if(!token) {
+        return res.status(403).json({
+          message: "Invalid token",
+        });
+      }
       // Send the token to the client
       res.json({
         token: token,
@@ -132,7 +125,12 @@ adminRouter.post("/signin", async (req, res) => {
         message: "Invalid Credentials!",
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    return res.json({
+      message: "Error signing in",
+      error: error.message,
+    });
+  }
 });
 
 //Define the admin routes for admin to creating the courses
@@ -173,7 +171,7 @@ adminRouter.post("/course", adminMiddleware, async (req, res) => {
   });
 });
 
-//Define the admin routes for admin to uodate the courses
+//Define the admin routes for admin to update the courses
 adminRouter.put("/course", adminMiddleware, async (req, res) => {
   const adminId = req.adminId;
   const requireBody = z.object({
@@ -196,9 +194,8 @@ adminRouter.put("/course", adminMiddleware, async (req, res) => {
   const course = await courseModel.findOne({
     _id: courseId,
     creatorId: adminId,
-    
   });
- 
+
   // If the course is not found, respond with an error message
   if (!course) {
     return res.status(404).json({
@@ -206,7 +203,7 @@ adminRouter.put("/course", adminMiddleware, async (req, res) => {
     });
   }
 
-   const updatedCourse = await courseModel.updateOne(
+  const updatedCourse = await courseModel.updateOne(
     {
       _id: courseId, // Match the course by ID
       creatorId: adminId, // Ensure the admin is the creator
@@ -220,7 +217,7 @@ adminRouter.put("/course", adminMiddleware, async (req, res) => {
   );
   res.status(200).json({
     message: "Course updated!", // Confirm successful course update
-    courseId: updatedCourse,
+    
   });
 });
 
@@ -235,19 +232,18 @@ adminRouter.get("/course/bulk", adminMiddleware, async (req, res) => {
     courses,
   });
 
-adminRouter.post("/course", (req, res) => {
-  res.send("SignUP is done!");
-});
-adminRouter.put("/course", (req, res) => {
-  res.send("SignUP is done!");
-});
+  adminRouter.post("/course", (req, res) => {
+    res.send("SignUP is done!");
+  });
+  adminRouter.put("/course", (req, res) => {
+    res.send("SignUP is done!");
+  });
 
-adminRouter.get("/course/bulk", (req, res) => {
-  res.send("SignUP is done!");
-
-}); 
-})
+  adminRouter.get("/course/bulk", (req, res) => {
+    res.send("SignUP is done!");
+  });
+});
 
 module.exports = {
   adminRouter,
-}
+};

@@ -4,7 +4,7 @@
  function adminMiddleware(req, res, next){
     const token = req.headers.token
     // console.log(token);
-    if(token === undefined){
+    if(token === null || undefined){
         return res.json({
             message: "Token is required"
         })
