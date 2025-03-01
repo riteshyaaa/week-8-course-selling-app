@@ -5,11 +5,6 @@ const { userModel, purchaseModel } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_USER_PASSWORD } = require("../config");
 const { userMiddleware } = require("../middlewares/user.js");
-
-
-
-
-
 const userRouter = Router();
 
 userRouter.post("/signup", async (req, res) => {

@@ -2,14 +2,10 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-
-//Import route handler
-
-
-
 const app = express();
 
 
+// Import the routers for handling admin, user and course routes 
 const { userRouter } = require("./routes/userRoutes");
 const { courseRouter } = require("./routes/courseRoutes");
 const { adminRouter } = require("./routes/adminRoutes");
